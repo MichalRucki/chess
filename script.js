@@ -1,3 +1,6 @@
+import Pawn  from "./modules/pawns"
+import castlingPossible from "./modules/castling"
+
 const board = document.getElementById('board')
 const cells = document.getElementsByTagName('td')
 const startBtn = document.getElementsByClassName('startBtn')
@@ -9,15 +12,6 @@ const knight = `<i class="fa-solid fa-chess-knight"></i>`
 const bishop = `<i class="fa-solid fa-chess-bishop"></i>`
 const pawn = `<i class="fa-solid fa-chess-pawn"></i>`
 
-class Pawn {
-    constructor(userName, id, symbol, color, set) {
-        this.user = userName,
-        this.id = id
-        this.set = false
-        this.symbol = symbol
-        this.color = color
-    }
-}
 
 const pawn1 = new Pawn('player1', 1, pawn, 'black', false)
 const pawn2 = new Pawn('player1', 2, pawn, 'black', false)
@@ -59,16 +53,16 @@ const queen1 = new Pawn('player1', 31, queen, 'black', false)
 const queen2 = new Pawn('player2', 32, queen, 'white', false)
 
 
-    const fields = [
-        [rock1, knight1, bishop1, king1, queen1, bishop2, knight2, rock2],
-        [pawn1, pawn2, pawn3, pawn4, pawn5, pawn6, pawn7, pawn8],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [pawn9, pawn10, pawn11, pawn12, pawn13, pawn14, pawn15, pawn16],
-        [rock3, knight3, bishop3, king2, queen2, bishop4, knight4, rock4],
-    ]
+const fields = [
+    [rock1, knight1, bishop1, king1, queen1, bishop2, knight2, rock2],
+    [pawn1, pawn2, pawn3, pawn4, pawn5, pawn6, pawn7, pawn8],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [pawn9, pawn10, pawn11, pawn12, pawn13, pawn14, pawn15, pawn16],
+    [rock3, knight3, bishop3, king2, queen2, bishop4, knight4, rock4],
+]
 
 var takeThis = ''
 let possible 
@@ -88,7 +82,6 @@ function nextPlayer() {
 }
 
 function moveCheck(move, x) {
-
     for (let i = 0; i < x; i++) {
         console.log(move[i])
 
@@ -126,70 +119,75 @@ function clearPossible() {
     }
 }
 
-var castlingArray = [
+var castling1
+var castling2
+var castling3
+var castling4
+
+const castlingArray = [
     castling1 = true,
     castling2 = true,
     castling3 = true,
     castling4 = true,
 ]
 
-function castlingPossible() {
+// function castlingPossible() {
 
-    if( fields[7][4] !== queen2 ) {
-        castlingArray[0] = false
-        castlingArray[1] = false
-    }
-    if( fields[0][4] !== queen1 ) {
-        castlingArray[2] = false
-        castlingArray[3] = false
-    }
+//     if( fields[7][4] !== queen2 ) {
+//         castlingArray[0] = false
+//         castlingArray[1] = false
+//     }
+//     if( fields[0][4] !== queen1 ) {
+//         castlingArray[2] = false
+//         castlingArray[3] = false
+//     }
     
-    if ( castlingArray[0] === true && fields[7][5] === 0 && fields[7][6] === 0) {
-        fields[7][6] = possible
-    }
-    if ( castlingArray[1] === true && fields[7][2] === 0 && fields[7][3] === 0) {
-        fields[7][2] = possible
-    }
-    if ( castlingArray[2] === true && fields[0][5] === 0 && fields[0][6] === 0) {
-        fields[0][6] = possible
-    }
-    if ( castlingArray[3] === true && fields[0][2] === 0 && fields[0][3] === 0) {
-        fields[0][2] = possible
-    }
-}
+//     if ( castlingArray[0] === true && fields[7][5] === 0 && fields[7][6] === 0) {
+//         fields[7][6] = possible
+//     }
+//     if ( castlingArray[1] === true && fields[7][2] === 0 && fields[7][3] === 0) {
+//         fields[7][2] = possible
+//     }
+//     if ( castlingArray[2] === true && fields[0][5] === 0 && fields[0][6] === 0) {
+//         fields[0][6] = possible
+//     }
+//     if ( castlingArray[3] === true && fields[0][2] === 0 && fields[0][3] === 0) {
+//         fields[0][2] = possible
+//     }
+// }
 
-function castlingSet() {
+// function castlingSet() {
     
-    if ( castlingArray[0] === true && fields[7][6] === possible && takeThis.symbol === queen && takeThis.user === 'player2') {
-        fields[7][5] = rock4
-        fields[7][6] = takeThis
-        fields[7][7] = 0
-        castlingArray[0] = false
-        castlingArray[1] = false
-    }
-    if ( castlingArray[1] === true && fields[7][2] === possible && takeThis.symbol === queen  && takeThis.user === 'player2') {
-        fields[7][3] = rock3
-        fields[7][2] = takeThis
-        fields[7][0] = 0
-        castlingArray[0] = false
-        castlingArray[1] = false
-    }
-    if ( castlingArray[2] === true && fields[0][6] === possible && takeThis.symbol === queen && takeThis.user === 'player1' ) {
-        fields[0][5] = rock2
-        fields[0][6] = takeThis
-        fields[0][7] = 0
-        castlingArray[2] = false
-        castlingArray[3] = false
-    }
-    if ( castlingArray[3] === true && fields[0][2] === possible && takeThis.symbol === queen && takeThis.user === 'player1' ) {
-        fields[0][3] = rock1
-        fields[0][2] = takeThis
-        fields[0][0] = 0
-        castlingArray[2] = false
-        castlingArray[3] = false
-    }
+//     if ( castlingArray[0] === true && fields[7][6] === possible && takeThis.symbol === queen && takeThis.user === 'player2') {
+//         fields[7][5] = rock4
+//         fields[7][6] = takeThis
+//         fields[7][7] = 0
+//         castlingArray[0] = false
+//         castlingArray[1] = false
+//     }
+//     if ( castlingArray[1] === true && fields[7][2] === possible && takeThis.symbol === queen  && takeThis.user === 'player2') {
+//         fields[7][3] = rock3
+//         fields[7][2] = takeThis
+//         fields[7][0] = 0
+//         castlingArray[0] = false
+//         castlingArray[1] = false
+//     }
+//     if ( castlingArray[2] === true && fields[0][6] === possible && takeThis.symbol === queen && takeThis.user === 'player1' ) {
+//         fields[0][5] = rock2
+//         fields[0][6] = takeThis
+//         fields[0][7] = 0
+//         castlingArray[2] = false
+//         castlingArray[3] = false
+//     }
+//     if ( castlingArray[3] === true && fields[0][2] === possible && takeThis.symbol === queen && takeThis.user === 'player1' ) {
+//         fields[0][3] = rock1
+//         fields[0][2] = takeThis
+//         fields[0][0] = 0
+//         castlingArray[2] = false
+//         castlingArray[3] = false
+//     }
     
-}
+// }
 
 
 function movePawn(user, thisY, thisX) {
@@ -501,7 +499,7 @@ function listener(){
 
 function generateFields() {
     var i = 0
-    for (subTab of fields) {
+    for (var subTab of fields) {
         for (const field of subTab) {
             if ( field === possible || field.set === true) {
                 cells[i].setAttribute('set', true)
@@ -532,7 +530,7 @@ function buildBoard() {
     var id = 0
     
     for (let tr = 0; tr < 8; tr++) {   
-        column = document.createElement('tr')
+        var column = document.createElement('tr')
         for (let td = 0; td < 8; td++) {
             let cell = document.createElement('td')
             cell.classList.add('cell')
