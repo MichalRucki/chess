@@ -22,8 +22,20 @@
     background-color: rgb(204, 157, 95);
 }
 
+.checkPawn {
+    display: none;
+    margin: auto;
+    width: 300px;
+    height: 100px;
+    border: 1px solid black;
+    
+	justify-content: center;
+	align-items: center;
+}
+
 .white {
     color:beige; 
+ 
     
 }
 
